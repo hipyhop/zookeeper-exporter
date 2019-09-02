@@ -105,6 +105,9 @@ func serveMetrics(location, listen string, zkOpts zkOptions) {
 	}
 
 	http.HandleFunc(location, h)
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNoContent)
+	})
 	log.Printf("starting serving metrics at %s%s", listen, location)
 	err := http.ListenAndServe(listen, nil)
 	errFatal(err)
