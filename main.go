@@ -108,6 +108,16 @@ func serveMetrics(location, listen string, zkOpts zkOptions) {
 	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNoContent)
 	})
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte(`<html>
+			<head><title>Zookeeper Exporter</title></head>
+			<body>
+			<h1>Zookeeper Exporter</h1>
+			<p><a href="` + location + `">Metrics</a></p>
+			</body>
+			</html>`))
+	})
+
 	log.Printf("starting serving metrics at %s%s", listen, location)
 	err := http.ListenAndServe(listen, nil)
 	errFatal(err)
